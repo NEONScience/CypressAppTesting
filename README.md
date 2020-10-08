@@ -1,4 +1,4 @@
-# NEONscienceCypressAppTesting
+# CypressAppTesting
 To get started with Cypress please watch this video: https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell.
 This site also includes all the documentation you will need for custom commands.
 
