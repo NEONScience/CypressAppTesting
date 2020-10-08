@@ -1,0 +1,24 @@
+{
+  "name": "neonsciencecypressapptesting",
+  "version": "1.0.0",
+  "description": "To get started with Cypress please watch this video: https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell.\r This site also includes all the documentation you will need for custom commands.",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walleo860/NEONscienceCypressAppTesting.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/walleo860/NEONscienceCypressAppTesting/issues"
+  },
+  "homepage": "https://github.com/walleo860/NEONscienceCypressAppTesting#readme",
+  "dependencies": {
+    "cypress": "^5.3.0"
+  }
+}
