@@ -14,8 +14,10 @@
 */
 
 const app_form_id = '85b3dc9a-9dd1-4645-a4ce-da6f5f5a6092'
-const email = 'youremail@battelleecology.org'
-const password = 'xxxxxxxxxxxx'
+const email = 
+const password = 
+
+import * as myModule from 
 
 describe('Login to fulcrum, Select App, & Create new record', function(){
     before(() => {

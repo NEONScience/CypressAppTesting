@@ -64,13 +64,14 @@ Cypress.Commands.add("login", (email, password, app_form_id, wait) =>{
               })
         }
     });
-    cy.wait(wait/5*1000)
+    cy.wait(wait/3*1000)
 })
 
 //These commands are designated for when you are on the records screen
 Cypress.Commands.add("new_record", (wait = 0) => {
     cy.get('.css-fx7t7r > .css-6hfj5t').click() // New Record
     .wait(wait*1000)
+    
     cy.get('.css-1fzkik5 > .css-15kfp1r').click()//minimizes map
     .wait(wait*1000)
 })
@@ -129,12 +130,12 @@ Cypress.Commands.add('new_child',(label, wait = 0)=>{
     .first()
     .click()
     .wait(wait*1000)
-
+/*
     cy.get('.css-1fzkik5 > .css-15kfp1r')
     .last()
     .click()//minimizes map
     .wait(wait*1000)
-    
+    */
 })
 
 Cypress.Commands.add('edit_new_child',(label, child_title, wait = 0)=>{      
@@ -172,9 +173,10 @@ Cypress.Commands.add('edit_child',(wait = 0)=>{
 })
 
 Cypress.Commands.add('save_child',(wait = 0)=>{
-    cy.get('[class="react-modal"]').last()   
-    .find('[title="Save"]')
-    .click(wait*1000)
+    cy.get('[title="Save"]').last()   
+    //.find('[title="Save"]')
+    .click()
+    .wait(wait*1000)
 })
 
 Cypress.Commands.add('close_child',(wait = 0)=>{
@@ -258,10 +260,6 @@ Cypress.Commands.add('recordlink', (label, record_title, select = 'Select', meth
     }}
 })
 
-
-
-
-
 //These are for testing assumptions of fields
 Cypress.Commands.add('popup',(response)=>{
     cy.get('.css-1ifqz3c')
@@ -329,3 +327,29 @@ Cypress.Commands.add('equal',(label, entry, wait = 0)=>{
     .wait(wait*1000)
 })
 
+//VST AI SPECIFIC FUNCTIONS//
+Cypress.Commands.add('vst_ai_meta',(domain, site, filterdate, plot, date, wait = 0)=>{
+    cy.get('.css-11r8j5i')
+    cy.new_record(3)
+    cy.choicefield('domainid', domain)
+    cy.choicefield('Select a siteID', site)
+    cy.date('FILTER: Show Plot Meta-Data collected after this date', filterdate, 2)
+    cy.recordlink('plotID<record link>',plot, 'Select', 'click')
+    cy.date('Date', date, 2)
+    cy.wait(wait)    
+})
+Cypress.Commands.add('vst_woody_ind',(tagid, growthform,)=>{
+        cy.recordlink('tagID_select', tagid, 'Select', 'click',6)
+        cy.choicefield('growthForm', growthform)
+        cy.choicefield('plantStatus', plantstatus)
+        cy.hidden('maxcrowndiameter')
+        cy.hidden('ninetycrowndiameter')
+        cy.save_child(1)
+        cy.invalid(['stemdiameter', 'measurementheight', 'vdapexheight', 'vdbaseheight'])
+        cy.text('stemDiameter (0.1 cm)',30)        
+        cy.text('measurementHeight (1 cm)',80)
+        cy.text('vdApexHeight (0.1 m)',10)
+        cy.text('vdBaseHeight (0.1 m)',-1)  
+        cy.choicefield('canopyPosition', 'Open grown')
+        cy.save_child(1)
+})

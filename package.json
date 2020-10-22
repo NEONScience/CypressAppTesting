@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "To get started with Cypress please watch this video: https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell.\r This site also includes all the documentation you will need for custom commands.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -19,6 +20,6 @@
   },
   "homepage": "https://github.com/walleo860/NEONscienceCypressAppTesting#readme",
   "dependencies": {
-    "cypress": "^5.3.0"
+    "cypress": "^5.4.0"
   }
 }
