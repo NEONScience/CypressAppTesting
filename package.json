@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/walleo860/NEONscienceCypressAppTesting.git"
+    "url": "git+https://github.com/NEONScience/CypressAppTesting.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/walleo860/NEONscienceCypressAppTesting/issues"
+    "url": "https://github.com/NEONScience/CypressAppTesting/issues"
   },
-  "homepage": "https://github.com/walleo860/NEONscienceCypressAppTesting#readme",
+  "homepage": "https://github.com/NEONScience/CypressAppTesting#readme",
   "dependencies": {
     "cypress": "^5.4.0"
   }
