@@ -6,8 +6,8 @@ Getting Started:
   1) Download and install node.js onto your computer.
   2) Clone this repo onto your computer. 
   3) You will notice the cypress file is already in it.  To open the Cypress GUI, navigate to the root of the repo using the command line and run 'npx cypress open'. 
-    a. If this continues to not work you may need to clear the cache 'npx cypress cache clear'
-    b. If this does not work you may need to reinstall cypress using 'npm install cypress'
+      a) If this continues to not work you may need to clear the cache 'npx cypress cache clear'
+      b) If this does not work you may need to reinstall cypress using 'npm install cypress'
     
 Using cypress: 
   1) Save all tests within the 'integration' folder within a folder for its app grouping.
