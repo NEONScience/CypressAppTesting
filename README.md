@@ -24,9 +24,10 @@ This site also includes all the documentation you will need for custom commands.
 ```
   **Don't worry this file is gitignored**
     
-## Using cypress: 
-  1) Save all tests within the 'integration' folder within a folder for its app grouping.
+## Using Cypress: 
+  1) Save all tests within the 'integration' folder within a folder for its app suite.
   2) Add all new commands to the 'support/commands.js' file
+  3) Add all environmental variables to the 'cypress.json' file
   3) Everytime your test or commands are saved while the Cypress GUI is open, it listens and will re run all your tests.
   4) Write tests so each it statement has a different test within it
   5) Lost as to how to do somthing? Check out this [repo](https://github.com/cypress-io/cypress-example-recipes)
@@ -34,4 +35,6 @@ This site also includes all the documentation you will need for custom commands.
   ```bash
   $ npx cypress open
   ```
+  
+  **"Please note that any appearance of danger is merely a device to enhance your testing experience." -GLaDOS**
   
