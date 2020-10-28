@@ -1,6 +1,6 @@
-# CypressAppTesting
+# NEON CypressAppTesting
 To get started with Cypress please watch this video: https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell.
-This site also includes all the documentation you will need for custom commands.
+This site also includes all the documentation you will need for custom commands.  This repo is mostly devoted to testing Fulcrum apps and all the custom cypress commands are made for it.
 
 ## Getting Started: 
   1) Download and install [node.js](https://nodejs.org/en/download/) onto your computer.
