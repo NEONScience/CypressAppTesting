@@ -4,6 +4,7 @@
   "description": "To get started with Cypress please watch this video: https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell.\r This site also includes all the documentation you will need for custom commands.",
   "main": "index.js",
   "type": "module",
+  "pluginsFile" :false,
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -20,6 +21,6 @@
   },
   "homepage": "https://github.com/NEONScience/CypressAppTesting#readme",
   "dependencies": {
-    "cypress": "^5.4.0"
+    "cypress": "^5.5.0"
   }
 }
