@@ -30,4 +30,8 @@ This site also includes all the documentation you will need for custom commands.
   3) Everytime your test or commands are saved while the Cypress GUI is open, it listens and will re run all your tests.
   4) Write tests so each it statement has a different test within it
   5) Lost as to how to do somthing? Check out this [repo](https://github.com/cypress-io/cypress-example-recipes)
+  6) When you want to test if your test is working, open up the GUI by navigating to the root of the directory and typeing
+  ```bash
+  $ npx cypress open
+  ```
   
