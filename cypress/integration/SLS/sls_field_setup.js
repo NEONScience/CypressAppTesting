@@ -14,8 +14,8 @@
 */
 
 const app_form_id = '8e82b7a1-8d11-4bac-baad-de6b2c9d8681'//,'85b3dc9a-9dd1-4645-a4ce-da6f5f5a6092'
-const email = 'youremail@battelleecology.org'
-const password = 'xxxxxxxxxxxx'
+const email = Cypress.env('email')
+const password = Cypress.env('password')
 
 describe('Login to fulcrum, Select App, & Create new record', function(){
     before(() => {

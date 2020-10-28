@@ -14,8 +14,8 @@
 */
 
 const app_form_id = 'ee2b3ddb-b592-4098-b0b8-5f191595302f'//DEV //'4106161a-88ec-40d3-aa0f-d5e1e7c9e641'//,prod PHE field setup app
-const email = 'youremail@battelleecology.org'
-const password = 'xxxxxxxxxxxx'
+const email = Cypress.env('email')
+const password = Cypress.env('password')
 
 describe('Login to fulcrum, Select App, & Create new record', function(){       
     before(() => {

@@ -14,10 +14,6 @@
 */
 
 const app_form_id = '85b3dc9a-9dd1-4645-a4ce-da6f5f5a6092'
-//import lodash from 'lodash'
-//console.log({lodash})
-//import login_credentials  from '../../support/login_credentials'
-//console.log(login_credentials)
 const email = Cypress.env('email')
 const password = Cypress.env('password')
 console.log(email, password)
