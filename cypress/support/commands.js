@@ -47,7 +47,6 @@ const { get } = require('jquery');
 //This should be in the before command section of your tests
 Cypress.Commands.add("login", (email, password, app_form_id) =>{
     cy.server()    
-    cy.route('GET', ('https://web.fulcrumapp.com/dash/' + app_form_id)).as('getForm')    
     cy.visit('https://web.fulcrumapp.com/dash/' + app_form_id) //formid
     //cy.wait('@getForm')
     cy.on('uncaught:exception', (err, runnable) => {
@@ -197,9 +196,11 @@ Cypress.Commands.add('child_to_parent',(wait = 0)=>{
 
 
 //For general fields of all sorts
-Cypress.Commands.add("choicefield", (label, selection, wait = 0) =>{//can be also used for classification fields but you must know the exact value ie.["DBL_yes","<3"] 
-    //cy.server()
-    //cy.route('GET', '/tile/*').as('wait')
+Cypress.Commands.add("choicefield", (label, selection, wait = 0) =>{
+    //selects value in choice field
+    //can be also used for classification fields but you must know the exact value ie.["DBL_yes","<3"] 
+    //label == field name
+    //selection == what to type in 
     cy.get('.css-11r8j5i').contains(label)
     .last()
     .siblings('.css-lfvyaf')/*.css-1rosotf*/
@@ -218,7 +219,11 @@ Cypress.Commands.add("yesno",(label, selection, wait = 0)=>{
     .wait(wait*1000)
 })
 
-Cypress.Commands.add('date',(label, date, wait = 0)=>{//date must be entered yyyy-mm-dd format
+Cypress.Commands.add('date',(label, date, wait = 0)=>{
+    //fills in date field
+    //label == field name
+    //date == what to type in 
+    //date must be entered yyyy-mm-dd format
     cy.get('.css-11r8j5i').contains(label)
     .siblings('.css-lfvyaf')
     .find('[type="date"]')
@@ -226,7 +231,10 @@ Cypress.Commands.add('date',(label, date, wait = 0)=>{//date must be entered yyy
     .wait(wait*1000)
 })
 
-Cypress.Commands.add('time',(label, time)=>{//HH:mm, HH:mm:ss or HH:mm:ss.SSS, where HH is 00-23, mm is 00-59, ss is 00-59, and SSS is 000-999
+Cypress.Commands.add('time',(label, time)=>{
+    //fills in time field
+    //label == field name
+    //time == what to type in, must be in //HH:mm, HH:mm:ss or HH:mm:ss.SSS, where HH is 00-23, mm is 00-59, ss is 00-59, and SSS is 000-999
     cy.get('.css-11r8j5i').contains(label)
     .wait(3000)
     .siblings()
@@ -235,6 +243,9 @@ Cypress.Commands.add('time',(label, time)=>{//HH:mm, HH:mm:ss or HH:mm:ss.SSS, w
 })
 
 Cypress.Commands.add('text',(label, entry, wait = 0)=>{
+    //fills in text field
+    //label == field name
+    //entry == what to type in 
     cy.get('.css-11r8j5i')
     .contains(label)
     .siblings()
@@ -244,6 +255,11 @@ Cypress.Commands.add('text',(label, entry, wait = 0)=>{
 })
 
 Cypress.Commands.add('recordlink', (label, record_title, select = 'select', method = 'type', index, wait = 0)=>{
+    //select == select | new; (select a current record or create new)
+    //method == click | type | index;  (how to select record.  Records not on the starting modal need to be typed in.  Can also select via index position)
+    //index == any #; Used with index method
+
+    //**Be weary stringing these commands together simotainiously**
     if(select == 'New'){
         cy.get('.css-11r8j5i').contains(label)
         .siblings('.css-lfvyaf')
@@ -281,8 +297,12 @@ Cypress.Commands.add('recordlink', (label, record_title, select = 'select', meth
     }}
 })
 
+
+
 //These are for testing assumptions of fields
 Cypress.Commands.add('popup',(response)=>{
+    //manipulates popups
+    //response == the button in the popup that you want to select
     cy.get('.modal-content')
     //.children()
     //.find('css-1ifqz3c')
@@ -291,11 +311,13 @@ Cypress.Commands.add('popup',(response)=>{
 })
 
 Cypress.Commands.add('hidden',(label)=>{
+    //tests if field is hidden
     cy.contains(label)
     .should('be.hidden', 'true')
 })
 
 Cypress.Commands.add('readonly',(label, tf = 'true')=>{
+    //tests if field is read only
     if(tf == 'true'){
         cy.contains(label)
         .siblings('.css-lfvyaf.css-1rosotf')
@@ -309,7 +331,8 @@ Cypress.Commands.add('readonly',(label, tf = 'true')=>{
     }
 })
 
-Cypress.Commands.add('required',(label, tf = 'true')=>{ //Looks for red astrisk. Does not work on dataevent SETREQUIRED set required
+Cypress.Commands.add('required',(label, tf = 'true')=>{ 
+    //Looks for red astrisk. Does not work on dataevent SETREQUIRED set required
     if(tf == 'true'){
         cy.get('.css-11r8j5i').contains(label)
         .siblings('.css-1jbztvp')
@@ -324,6 +347,8 @@ Cypress.Commands.add('required',(label, tf = 'true')=>{ //Looks for red astrisk.
 })
 
 Cypress.Commands.add('invalid', (fields)=>{
+    //tests what fields will not let you save
+    //fields == array of labels that you anticipate should prevent saving
     var genArr =  Array.from(Array(fields.length).keys())
     cy.get('[title="Save"]').last()   
     .click()
@@ -342,6 +367,7 @@ Cypress.Commands.add('invalid', (fields)=>{
 })
 
 Cypress.Commands.add('equal',(label, entry, wait = 0)=>{
+    //checks if a field is equal to somthing
     cy.get('.css-11r8j5i')
     .contains(label)
     .siblings()
@@ -365,6 +391,7 @@ Cypress.Commands.add('vst_ai_meta',(domain, site, filterdate, plot, measuredBy, 
 
     //cy.wait(wait)    
 })
+
 Cypress.Commands.add('vst_woody_ind',(tagid, growthform,)=>{
         cy.recordlink('tagID_select', tagid, 'Select', 'click')
         cy.choicefield('growthForm', growthform)
