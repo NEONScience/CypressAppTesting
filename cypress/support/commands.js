@@ -189,10 +189,17 @@ Cypress.Commands.add('close_child',(wait = 0)=>{
     .click(wait*1000)
 })
 
+Cypress.Commands.add('child_to_parent',(wait = 0)=>{
+    cy.get('.css-17dc5wb > .css-1p0myys').first()
+    //cy.get('[data-layer="Padding"]').first()
+    .click(wait*1000)
+})
+
+
 //For general fields of all sorts
 Cypress.Commands.add("choicefield", (label, selection, wait = 0) =>{//can be also used for classification fields but you must know the exact value ie.["DBL_yes","<3"] 
-    cy.server()
-    cy.route('GET', '/tile/*').as('wait')
+    //cy.server()
+    //cy.route('GET', '/tile/*').as('wait')
     cy.get('.css-11r8j5i').contains(label)
     .last()
     .siblings('.css-lfvyaf')/*.css-1rosotf*/
@@ -236,18 +243,18 @@ Cypress.Commands.add('text',(label, entry, wait = 0)=>{
     .wait(wait*1000)
 })
 
-Cypress.Commands.add('recordlink', (label, record_title, select = 'Select', method = 'type', wait = 0)=>{
+Cypress.Commands.add('recordlink', (label, record_title, select = 'select', method = 'type', index, wait = 0)=>{
     if(select == 'New'){
         cy.get('.css-11r8j5i').contains(label)
         .siblings('.css-lfvyaf')
         .contains(select)
         .click()
         .wait(wait*1000)
-    }else if (select == 'Select'){
+    }else if (select == 'select'){
         if (method == 'type'){
             cy.get('.css-11r8j5i').contains(label)
             .siblings('.css-lfvyaf')
-            .contains(select)
+            .contains('Select')
             .click()
             cy.get('.css-1d8ocjm > :nth-child(2) > .css-sv4uu')
             .type(record_title)
@@ -259,11 +266,18 @@ Cypress.Commands.add('recordlink', (label, record_title, select = 'Select', meth
         }else if(method == 'click'){
             cy.get('.css-11r8j5i').contains(label)
             .siblings('.css-lfvyaf')
-            .contains(select)
-            .click()
+            .contains('Select')
+            .click().wait(1000)
             cy.contains(record_title)
             .click()
             .wait(wait*1000)
+    }else if(method == 'index'){
+        var index = parseInt(index) + 1
+        cy.get('.css-11r8j5i').contains(label)
+            .siblings('.css-lfvyaf')
+            .contains('Select')
+            .click().wait(1000)
+        cy.get('[style="height: 260px; overflow: hidden scroll;"] > :nth-child(1) > :nth-child('+ index +')').click()
     }}
 })
 
@@ -311,9 +325,8 @@ Cypress.Commands.add('required',(label, tf = 'true')=>{ //Looks for red astrisk.
 
 Cypress.Commands.add('invalid', (fields)=>{
     var genArr =  Array.from(Array(fields.length).keys())
-    cy.get('[class="react-modal"]').last()   
-    .find('[title="Save"]')
-    .wait(1500)
+    cy.get('[title="Save"]').last()   
+    .click()
 
     cy.wrap(genArr).each((index) => {
         cy.get('.modal-content.css-k4i5eu.modal-transition.entered')
@@ -321,8 +334,10 @@ Cypress.Commands.add('invalid', (fields)=>{
         .children()
         .contains(fields[index])
     })
-    cy.get('.modal-content.css-k4i5eu.modal-transition.entered')
-    .find(".css-2mrq24.css-1jfprmr")
+    cy.get('.modal-content')
+    .children()
+    .last()
+    .contains('Okay')
     .click()
 })
 
@@ -336,14 +351,18 @@ Cypress.Commands.add('equal',(label, entry, wait = 0)=>{
 })
 
 //VST AI SPECIFIC FUNCTIONS//
-Cypress.Commands.add('vst_ai_meta',(domain, site, filterdate, plot, date)=>{
+Cypress.Commands.add('vst_ai_meta',(domain, site, filterdate, plot, measuredBy, recordedBy, date)=>{
     cy.get('.css-11r8j5i')
     cy.new_record()
     cy.choicefield('domainid', domain)
     cy.choicefield('Select a siteID', site)
     cy.date('FILTER: Show Plot Meta-Data collected after this date', filterdate)
-    cy.recordlink('plotID<record link>',plot, 'Select', 'click')
+    cy.recordlink('plotID<record link>',plot, 'select', 'click')
+    cy.recordlink('measuredBy', measuredBy, 'select','index', 1)    
     cy.date('Date', date)
+    cy.choicefield('samplingProtocolVersion', 'J')
+    cy.recordlink('recordedBy', recordedBy,'select','index', 2)
+
     //cy.wait(wait)    
 })
 Cypress.Commands.add('vst_woody_ind',(tagid, growthform,)=>{
