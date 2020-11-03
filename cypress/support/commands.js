@@ -45,26 +45,30 @@ const { get } = require('jquery');
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 //This should be in the before command section of your tests
-Cypress.Commands.add("login", (email, password, app_form_id, wait) =>{
+Cypress.Commands.add("login", (email, password, app_form_id) =>{
+    cy.server()    
+    cy.route('GET', ('https://web.fulcrumapp.com/dash/' + app_form_id)).as('getForm')    
+    cy.visit('https://web.fulcrumapp.com/dash/' + app_form_id) //formid
+    //cy.wait('@getForm')
     cy.on('uncaught:exception', (err, runnable) => {
         expect(err.message).to.include('ajax')        
         done()
-        return false
-      })
-    cy.visit('https://web.fulcrumapp.com/dash/' + app_form_id) //formid
-    
+        //return false
+      })     
     cy.get("body").then($body => {
-        if ($body.find("#user_email").length > 0) {   //evaluates as true
+        if ($body.find("#user_email").length > 0) {  //if redirected to login
+               
             cy.get("#user_email").type(email) //Email
             cy.get("#user_password").type(password) //password
             cy.get('#user_remember_me').click()
-            cy.get(".login-action").click().wait(wait*1000)//login and wait 
+            cy.get(".login-action").click()//login and wait 
             Cypress.Cookies.defaults({
                 preserve: ['_fulcrum_session', 'remember_user_token','intercom-session-nxff46cx', 'membership']
               })
+            //cy.visit('https://web.fulcrumapp.com/dash/' + app_form_id) //formid
         }
-    });
-    cy.wait(wait/3*1000)
+        
+    });    
 })
 
 //These commands are designated for when you are on the records screen
@@ -187,12 +191,15 @@ Cypress.Commands.add('close_child',(wait = 0)=>{
 
 //For general fields of all sorts
 Cypress.Commands.add("choicefield", (label, selection, wait = 0) =>{//can be also used for classification fields but you must know the exact value ie.["DBL_yes","<3"] 
+    cy.server()
+    cy.route('GET', '/tile/*').as('wait')
     cy.get('.css-11r8j5i').contains(label)
     .last()
     .siblings('.css-lfvyaf')/*.css-1rosotf*/
     .find('.css-lea2i5')
     .select(selection)
-    .wait(wait*1000)
+    //.wait(wait*1000)
+    //cy.wait('@wait').its('status').should('eq', 200)
 })
 
 Cypress.Commands.add("yesno",(label, selection, wait = 0)=>{
@@ -262,8 +269,9 @@ Cypress.Commands.add('recordlink', (label, record_title, select = 'Select', meth
 
 //These are for testing assumptions of fields
 Cypress.Commands.add('popup',(response)=>{
-    cy.get('.css-1ifqz3c')
-    .children()
+    cy.get('.modal-content')
+    //.children()
+    //.find('css-1ifqz3c')
     .contains(response)
     .click()
 })
@@ -328,23 +336,23 @@ Cypress.Commands.add('equal',(label, entry, wait = 0)=>{
 })
 
 //VST AI SPECIFIC FUNCTIONS//
-Cypress.Commands.add('vst_ai_meta',(domain, site, filterdate, plot, date, wait = 0)=>{
+Cypress.Commands.add('vst_ai_meta',(domain, site, filterdate, plot, date)=>{
     cy.get('.css-11r8j5i')
-    cy.new_record(3)
+    cy.new_record()
     cy.choicefield('domainid', domain)
     cy.choicefield('Select a siteID', site)
-    cy.date('FILTER: Show Plot Meta-Data collected after this date', filterdate, 2)
+    cy.date('FILTER: Show Plot Meta-Data collected after this date', filterdate)
     cy.recordlink('plotID<record link>',plot, 'Select', 'click')
-    cy.date('Date', date, 2)
-    cy.wait(wait)    
+    cy.date('Date', date)
+    //cy.wait(wait)    
 })
 Cypress.Commands.add('vst_woody_ind',(tagid, growthform,)=>{
-        cy.recordlink('tagID_select', tagid, 'Select', 'click',6)
+        cy.recordlink('tagID_select', tagid, 'Select', 'click')
         cy.choicefield('growthForm', growthform)
         cy.choicefield('plantStatus', plantstatus)
         cy.hidden('maxcrowndiameter')
         cy.hidden('ninetycrowndiameter')
-        cy.save_child(1)
+        cy.save_child()
         cy.invalid(['stemdiameter', 'measurementheight', 'vdapexheight', 'vdbaseheight'])
         cy.text('stemDiameter (0.1 cm)',30)        
         cy.text('measurementHeight (1 cm)',80)

@@ -16,12 +16,16 @@ This site also includes all the documentation you will need for custom commands.
   5) In the root, create/edit a file called 'cypress.json' and ensure it contains this:
   ```json
   {
+    "waitForAnimations": true,
+    "defaultCommandTimeout": 10000,
+    "pageLoadTimeout": 30000,
     "env":{
         "email":"your_fulcrum_email@yourdomain.com",
         "password":"your_password"
     }
-}
+  }
 ```
+  
   **Don't worry this file is gitignored**
     
 ## Using Cypress: 
