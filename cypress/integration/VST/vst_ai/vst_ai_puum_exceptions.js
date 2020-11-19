@@ -3,14 +3,16 @@ const app_form_id = '85b3dc9a-9dd1-4645-a4ce-da6f5f5a6092'
 const email = Cypress.env('email')
 const password = Cypress.env('password')
 
-describe('Description of overall tests', function(){
+describe('PUUM measurmentHeight exception', function(){
     before(() => {
         cy.clearLocalStorage()
         cy.login(email, password, app_form_id)
       })
     it('metadata',() => {
         cy.vst_ai_meta('D20', 'PUUM', '2020-10-29', 'PUUM, PUUM_031, November 2, 2020, tower',
-         'Donoso, Evan, donoso@battelleecology.org', 'Donoso, Evan, donoso@battelleecology.org', '2020-11-03')
+         'Donoso, Evan, donoso@battelleecology.org','Donoso, Evan, donoso@battelleecology.org',
+          '2020-11-03', '2020 - NEON.DOC.000987vJ'
+        )
         cy.new_child('Apparent Individuals: Woody Stems (trees, shrubs, saplings, lianas)')
     })
     it('woody individual',() =>{
@@ -41,7 +43,7 @@ describe('Description of overall tests', function(){
         cy.text('measurementHeight (1 cm)',450)
         cy.save_child()
         cy.child_to_parent()
-        cy.recordlink('recordedBy', 'Mike', 'select', 'index', 1)
+        cy.recordlink('recordedBy', '', 'select', 'index', 1)
         cy.save_parent()        
     })
 })
