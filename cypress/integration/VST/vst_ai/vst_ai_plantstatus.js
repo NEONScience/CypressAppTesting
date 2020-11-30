@@ -82,19 +82,13 @@ describe('Login to fulcrum, Select App, & Create new record', function(){
             cy.hidden('maxcrowndiameter')
             cy.hidden('ninetycrowndiameter')           
             console.log('test')
-            console.log(vst_ai["label"])
             console.log("test2")
-            console.log(vst_ai["label"]["length"])
-            fields.forEach(e => e.replace(e,vst_ai["label"][e]))
             console.log(fields)
             var fieldsArr =  Array.from(Array(fields.length).keys())           
             cy.wrap(fieldsArr).each((index3) => { // A for loop of growthforms
                 var field = fields[index3]
-                console.log(field)
-                
                 var value = vst_ai["|9|10|"][gf[index2]]["g_values"][index3]
-                console.log(value)
-                
+                console.log(value)                
                 if(vst_ai.field_type.text.includes(field)){
                     cy.text(field, value)
                 }else if(vst_ai.field_type.yesno.includes(field)){
