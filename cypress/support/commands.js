@@ -53,7 +53,13 @@ Cypress.Commands.add("login", (email, password, app_form_id) =>{
         expect(err.message).to.include('ajax')        
         done()
         //return false
-      })     
+      })
+    cy.on('uncaught:exception', (err, runnable) => {
+        // returning false here prevents Cypress from
+        expect(err.message).to.include('evaluateDataEvent')
+        // failing the test
+        return false
+    })     
     cy.get("body").then($body => {
         if ($body.find("#user_email").length > 0) {  //if redirected to login
                
@@ -67,7 +73,8 @@ Cypress.Commands.add("login", (email, password, app_form_id) =>{
             //cy.visit('https://web.fulcrumapp.com/dash/' + app_form_id) //formid
         }
         
-    });    
+    }); 
+    
 })
 
 //These commands are designated for when you are on the records screen
@@ -171,7 +178,11 @@ Cypress.Commands.add('add_child',(wait = 0)=>{
     cy.get('.css-1jsohtw > .css-14x6aky')
     .first()
     .click()
-    .wait(wait*1000)    
+    .wait(wait*1000) 
+    cy.get('.css-1fzkik5 > .css-15kfp1r')
+    .last()
+    .click()
+    .wait(wait*1000)   
 })
 
 Cypress.Commands.add('edit_child',(wait = 0)=>{
@@ -188,8 +199,8 @@ Cypress.Commands.add('save_child',(wait = 0)=>{
 })
 
 Cypress.Commands.add('close_child',(wait = 0)=>{
-    cy.get('[class="react-modal"]').last()   
-    .find('[title="Close"]')
+    cy.get('.editor-container').last()   
+    .find('[title="Close"]').first()
     .click(wait*1000)
 })
 
@@ -302,6 +313,14 @@ Cypress.Commands.add('recordlink', (dataname, record_title, select = 'select', m
     }}
 })
 
+Cypress.Commands.add('hyperlink',(dataname)=>{
+cy.get('.element-data-name-'+dataname)
+.children('.css-1mtbxkt')
+.children()
+.find('.css-1sugwtq')
+.children()
+.click()
+})
 
 
 //These are for testing assumptions of fields
@@ -309,9 +328,10 @@ Cypress.Commands.add('popup',(response)=>{
     //manipulates popups
     //response == the button in the popup that you want to select
     cy.get('.modal-content')
-    //.children()
-    //.find('css-1ifqz3c')
-    .contains(response)
+    .children()
+    //.find('.css-1ifqz3c')
+    .last()
+    .contains(response).wait(500)
     .click()
 })
 
@@ -377,25 +397,40 @@ Cypress.Commands.add('invalid', (fields)=>{
     }
 })
 
-Cypress.Commands.add('equal',(dataname, entry, wait = 0)=>{
+Cypress.Commands.add('equal',(fieldtype, dataname, entry, wait = 0)=>{
     //checks if a field is equal to somthing
-    cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
-    .children()
-    .find('.css-1um1x15')
-    .should('eq', entry)
-    .wait(wait*1000)
+    if(fieldtype == 'text'){
+        cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
+        .children()
+        .find('.css-1um1x15')
+        .should('eq', entry)
+        .wait(wait*1000)
+    }else if(fieldtype == 'choicefield'){
+        cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
+        .children()
+        .find('.css-lea2i5')
+        .should('have.value', entry)
+    }else if(fieldtype == 'yesno'){
+        cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
+        .children()
+        .find('.css-pb69ky')
+        .should('eq', entry)    
+
+        
+    }
 })
 
 //VST AI SPECIFIC FUNCTIONS//
 Cypress.Commands.add('vst_ai_meta',(domain, site, filterdate, plot, measuredBy, /*recordedBy,*/  date, protocol)=>{
     cy.new_record()
-    cy.recordlink('recordedby_link', '', 'select','index', 2)   
+    localStorage.clear();        
+    localStorage.removeItem('https://fulcrumapp.s3.amazonaws.com');
+    //cy.recordlink('recordedby_link', '', 'select','index', 2)   
     cy.choicefield('domainid_filter', domain)
     cy.choicefield('siteid_filter', site)
     cy.date('filter_plotmetadata', filterdate)
     cy.recordlink('measuredby_link', measuredBy, 'select','click')
-    cy.recordlink('plotid_link',plot, 'select', 'click')
-      
+    cy.recordlink('plotid_link',plot, 'select', 'click')      
     cy.date('date', date)
     cy.choicefield('samplingprotocolversion', protocol)   
         
