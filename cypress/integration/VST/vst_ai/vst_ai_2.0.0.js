@@ -230,6 +230,7 @@ describe('VST AI v2.0.0 FS Review', function(){
         cy.choicefield('canopyposition', 'Full sun')
         cy.invalid(['Break height'])
         cy.text('vdapexheight', 0)
+        cy.text('remarks', 'remarks')
         cy.save_child()
     })
     it('addstems defaults to Yes when mbt ',() => {
@@ -251,16 +252,16 @@ describe('VST AI v2.0.0 FS Review', function(){
 
         cy.add_child()
         cy.choicefield('plantstatus', '1')
-        cy.text('measurmentheight', 120)
+        cy.text('measurementheight', 120)
         cy.text('stemdiameter', 20)
-        cy.text('vdapexheight', 9)
-        cy.text('vdbaseheight', -2)
-        cy.text('maxcrowndiameter',7)
-        cy.text('ninetycrowndiameter',2)
-        cy.choicefield('canopyposition', 'Full sun')
-        cy.invalid(['tagid'])
+        cy.yesno("addstems","No")
+        cy.invalid(['TagID'])
         cy.recordlink('tagid_select', 'BONA_001, 01403, 31, PIMA, 2017', 'select', 'click')//.wait(5000)
         cy.save_child()
     })
-
+    it('end of metadata',() => {
+        cy.child_to_parent()
+        cy.recordlink('recordedby_link', 'Baldwin, Harper, baldwinh@battelleecology.org', 'select','click')
+        cy.save_parent()    
+    })
 })

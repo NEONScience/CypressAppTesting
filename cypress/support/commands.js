@@ -178,11 +178,15 @@ Cypress.Commands.add('add_child',(wait = 0)=>{
     cy.get('.css-1jsohtw > .css-14x6aky')
     .first()
     .click()
-    .wait(wait*1000) 
-    cy.get('.css-1fzkik5 > .css-15kfp1r')
-    .last()
-    .click()
-    .wait(wait*1000)   
+    .wait(wait*1000)
+    cy.get("body").then($body => {
+        if ($body.find('[style="position: absolute; left: 0px; top: 0px; z-index: 106; width: 100%;"] > div > img').length > 0) {
+            cy.get('.css-1fzkik5 > .css-15kfp1r')
+            .last()
+            .click()
+            .wait(wait*1000)  
+        }
+    })     
 })
 
 Cypress.Commands.add('edit_child',(wait = 0)=>{
@@ -226,8 +230,6 @@ Cypress.Commands.add("choicefield", (dataname, selection, wait = 0) =>{
     .select(selection)
 })
 
-
-
 Cypress.Commands.add("yesno",(dataname, selection, wait = 0)=>{
     cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
     .children()
@@ -245,6 +247,7 @@ Cypress.Commands.add('date',(dataname, date, wait = 0)=>{
     cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
     .children()
     .find('[type="date"]')
+    .clear()
     .type(date)
     .wait(wait*1000)
 })
@@ -256,6 +259,7 @@ Cypress.Commands.add('time',(dataname, time)=>{
     cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
     .children()
     .find('.css-rxtobg')
+    .clear()
     .type(time)
 })
 
@@ -266,6 +270,7 @@ Cypress.Commands.add('text',(dataname, entry, wait = 0)=>{
     cy.get('.element-data-name-'+dataname+'.css-1jh7eqz.css-1cynuie')
     .children()
     .find('.css-1um1x15')
+    .clear()
     .type(entry)
     .wait(wait*1000)
 })
